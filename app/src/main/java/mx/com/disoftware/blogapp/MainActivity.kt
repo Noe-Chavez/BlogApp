@@ -1,21 +1,29 @@
 package mx.com.disoftware.blogapp
 
-import android.content.ActivityNotFoundException
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
     private lateinit var btnTakePicture: Button
+
+    private var resultLauncher = this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            imageView.setImageBitmap(imageBitmap)
+        }
+    }
 
     private var REQUEST_IMAGE_CAPTURE = 1;
 
@@ -70,27 +78,15 @@ class MainActivity : AppCompatActivity() {
             }
 
         btnTakePicture.setOnClickListener {
-            dispatchTakePictureIntent()
+            //dispatchTakePictureIntent()
+            openSomeActivityForResult()
         }
 
     }
 
-    private fun dispatchTakePictureIntent() {
-        // Obtener la foto y validar que se tiene una app instalada para ello.
+    fun openSomeActivityForResult() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "No existe alguna aplicación para tomar fotos", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            imageView.setImageBitmap(imageBitmap)
-        }
+        resultLauncher.launch(takePictureIntent)
     }
 
 }
