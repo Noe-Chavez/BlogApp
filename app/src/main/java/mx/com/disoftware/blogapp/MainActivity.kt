@@ -11,6 +11,10 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             val data = result.data
             val imageBitmap = data?.extras?.get("data") as Bitmap
             imageView.setImageBitmap(imageBitmap)
+            uploadPicture(imageBitmap);
         }
     }
 
@@ -87,6 +92,35 @@ class MainActivity : AppCompatActivity() {
     fun openSomeActivityForResult() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         resultLauncher.launch(takePictureIntent)
+    }
+
+    // Para subir la foto a firestore de Firebase
+    fun uploadPicture(bitmap: Bitmap) {
+        // Obteniendo una referencia al almacenamiento Storage de Firebase
+        val storageRef = FirebaseStorage.getInstance().reference
+        // Nombre con el que se guardará la imagen
+        val imageRef = storageRef.child("image.jpg")
+        // Comprimir imagen
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        val uploadTask = imageRef.putBytes(data)
+
+        uploadTask.continueWithTask { task ->
+            // Si ocurre un error al regresar la promesa
+            if(!task.isSuccessful) {
+                task.exception?.let { exception ->
+                    throw exception
+                }
+            }
+            imageRef.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downLoadUrl = task.result.toString()
+                Log.d("Storage", "uploadPrictureUrl: $downLoadUrl")
+            }
+        }
+
     }
 
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "714381189629",
+    "project_id": "blogapp-cac1e",
+    "storage_bucket": "blogapp-cac1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714381189629:android:12ee48cfd5ad05fdc83994",
+        "android_client_info": {
+          "package_name": "mx.com.disoftware.blogapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "714381189629-8cll3u4li9ajbjie8ueabpho9ule6frq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-qRhm1TTVoTYJ_PlG7Zr41bKNGOiPJSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "714381189629-8cll3u4li9ajbjie8ueabpho9ule6frq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
