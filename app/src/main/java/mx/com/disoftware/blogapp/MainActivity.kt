@@ -15,6 +15,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -99,7 +100,9 @@ class MainActivity : AppCompatActivity() {
         // Obteniendo una referencia al almacenamiento Storage de Firebase
         val storageRef = FirebaseStorage.getInstance().reference
         // Nombre con el que se guardará la imagen
-        val imageRef = storageRef.child("image.jpg")
+        var imageRef = storageRef.child("${UUID.randomUUID()}.jpg") // UUID crea un nombre unico
+        // Guardar la imagen dentro de una carpeta
+        imageRef = storageRef.child("image/${UUID.randomUUID()}.jpg")
         // Comprimir imagen
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -117,6 +120,12 @@ class MainActivity : AppCompatActivity() {
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downLoadUrl = task.result.toString()
+                // Agregando una imagen a la base de FireStore a un dato ya existente
+                FirebaseFirestore
+                    .getInstance()
+                    .collection("ciudades")
+                    .document("LA")
+                    .update(mapOf("imageUrl" to downLoadUrl))
                 Log.d("Storage", "uploadPrictureUrl: $downLoadUrl")
             }
         }
@@ -125,4 +134,4 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-data class Ciudad(val population: Int = 0, val color:String = "")
+data class Ciudad(val population: Int = 0, val color:String = "", val downLoadUrl:String = "")
