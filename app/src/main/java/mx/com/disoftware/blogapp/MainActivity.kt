@@ -19,8 +19,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var REQUEST_IMAGE_CAPTURE = 1;
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
