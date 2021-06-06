@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/homeScreenFragment">
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="mx.com.disoftware.blogapp.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/homeScreenFragment"
+        android:name="mx.com.disoftware.blogapp.ui.home.HomeScreenFragment"
+        android:label="fragment_home_screen"
+        tools:layout="@layout/fragment_home_screen" />
 </navigation>
