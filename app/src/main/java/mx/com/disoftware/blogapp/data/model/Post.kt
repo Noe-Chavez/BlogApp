@@ -1,6 +1,6 @@
 package mx.com.disoftware.blogapp.data.model
 
-import java.sql.Timestamp
+import com.google.firebase.Timestamp
 
 data class Post(
     val profile_picture: String = "",
