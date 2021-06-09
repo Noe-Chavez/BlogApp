@@ -75,6 +75,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // Play services corutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+
     // Evitar el problema de desboradmiento de los 65536k (DexFile)
     implementation 'androidx.multidex:multidex:2.0.1'
 
