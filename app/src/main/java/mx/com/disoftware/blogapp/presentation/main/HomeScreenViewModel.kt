@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import kotlinx.coroutines.Dispatchers
 import mx.com.disoftware.blogapp.core.Resource
-import mx.com.disoftware.blogapp.domain.HomeScreenRepo
+import mx.com.disoftware.blogapp.domain.home.HomeScreenRepo
 import java.lang.Exception
 
 class HomeScreenViewModel(private val repo: HomeScreenRepo) : ViewModel() {

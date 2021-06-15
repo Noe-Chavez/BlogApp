@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import mx.com.disoftware.blogapp.R
 import mx.com.disoftware.blogapp.core.Resource
-import mx.com.disoftware.blogapp.data.remote.HomeScreenDataSource
+import mx.com.disoftware.blogapp.data.remote.home.HomeScreenDataSource
 import mx.com.disoftware.blogapp.databinding.FragmentHomeScreenBinding
-import mx.com.disoftware.blogapp.domain.HomeScreenRepoImpl
+import mx.com.disoftware.blogapp.domain.home.HomeScreenRepoImpl
 import mx.com.disoftware.blogapp.presentation.HomeScreenViewModel
 import mx.com.disoftware.blogapp.presentation.HomeScreenViewModelFactory
 import mx.com.disoftware.blogapp.ui.home.adapter.HomeScreenAdapter

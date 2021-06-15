@@ -1,4 +1,4 @@
-package mx.com.disoftware.blogapp.domain
+package mx.com.disoftware.blogapp.domain.home
 
 import mx.com.disoftware.blogapp.core.Resource
 import mx.com.disoftware.blogapp.data.model.Post

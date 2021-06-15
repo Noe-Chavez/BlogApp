@@ -1,4 +1,4 @@
-package mx.com.disoftware.blogapp.data.remote
+package mx.com.disoftware.blogapp.data.remote.home
 
 import com.google.firebase.firestore.FirebaseFirestore
 import mx.com.disoftware.blogapp.core.Resource
