@@ -18,6 +18,15 @@ class AuthViewModel(private val repo: AuthRepo) : ViewModel() {
         }
     }
 
+    fun signUp(email: String, password: String, username: String) = liveData(Dispatchers.IO) {
+        emit(Result.Loading())
+        try {
+            emit(Result.Success(repo.signUp(email, password, username)))
+        } catch (e: Exception) {
+            emit(Result.Failure(e))
+        }
+    }
+
 }
 
 // Para poder hacer uso del repo, ya que como la clase hereda de ViewModel, ésta no se permite que
