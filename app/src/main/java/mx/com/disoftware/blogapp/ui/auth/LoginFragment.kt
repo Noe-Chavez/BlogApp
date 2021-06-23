@@ -8,12 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import mx.com.disoftware.blogapp.R
-import mx.com.disoftware.blogapp.core.Resource
-import mx.com.disoftware.blogapp.data.remote.auth.LoginDataSource
+import mx.com.disoftware.blogapp.core.Result
+import mx.com.disoftware.blogapp.data.remote.auth.AuthDataSource
 import mx.com.disoftware.blogapp.databinding.FragmentLoginBinding
-import mx.com.disoftware.blogapp.domain.auth.LoginRepoImpl
-import mx.com.disoftware.blogapp.presentation.auth.LoginScreenViewModel
-import mx.com.disoftware.blogapp.presentation.auth.LoginScreenViewModelFacotry
+import mx.com.disoftware.blogapp.domain.auth.AuthRepoImpl
+import mx.com.disoftware.blogapp.presentation.auth.AuthViewModel
+import mx.com.disoftware.blogapp.presentation.auth.AuthViewModelFactory
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -21,8 +21,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var binding: FragmentLoginBinding
     // Se inicializa y toma el valor de getInstance (FirebaseAuth), se instancia hasta que se manda a llamar.
     private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
-    private val viewModel by viewModels<LoginScreenViewModel> { LoginScreenViewModelFacotry(LoginRepoImpl(
-        LoginDataSource()
+    private val viewModel by viewModels<AuthViewModel> { AuthViewModelFactory(AuthRepoImpl(
+        AuthDataSource()
     )) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,15 +74,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun signIn(email: String, password: String) {
         viewModel.signIn(email, password).observe(viewLifecycleOwner, { result ->
             when (result) {
-                is Resource.Loading -> {
+                is Result.Loading -> {
                     binding.progressCircular.visibility = View.VISIBLE
                     binding.btnSignin.isEnabled = false
                 }
-                is Resource.Success -> {
+                is Result.Success -> {
                     binding.progressCircular.visibility = View.GONE
                     findNavController().navigate(R.id.action_loginFragment_to_homeScreenFragment)
                 }
-                is Resource.Failure -> {
+                is Result.Failure -> {
                     binding.progressCircular.visibility = View.GONE
                     binding.btnSignin.isEnabled = true
                     Toast.makeText(requireContext(), "Error: ${result.exception}", Toast.LENGTH_LONG).show()

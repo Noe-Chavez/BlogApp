@@ -25,34 +25,50 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             val confirmPassword = binding.editTextConfirmPassword.text.toString().trim()
             val email = binding.editTextEmail.text.toString().trim()
 
-            if (userName.isEmpty()) {
-                binding.editTextUsername.error = "this field cannot be empty"
-                return@setOnClickListener
-            }
-
-            if (email.isEmpty()) {
-                binding.editTextEmail.error = "this field cannot be empty"
-                return@setOnClickListener
-            }
-
-            if (password.isEmpty()) {
-                binding.editTextPassword.error = "this field cannot be empty"
-                return@setOnClickListener
-            }
-
-            if (confirmPassword.isEmpty()) {
-                binding.editTextConfirmPassword.error = "this field cannot be empty"
-                return@setOnClickListener
-            }
-
-            if (password != confirmPassword) {
-                binding.editTextConfirmPassword.error = "Password does not march";
-                binding.editTextPassword.error = "Password does not march";
-                return@setOnClickListener // finaliza la ejcución hasta donde se llama esta acción, es decir al botón.
-            }
+            if (validateUserData(
+                    userName,
+                    email,
+                    password,
+                    confirmPassword
+                )
+            ) return@setOnClickListener
 
             Log.d("SignUp", "$userName $password $email")
         }
+    }
+
+    private fun validateUserData(
+        userName: String,
+        email: String,
+        password: String,
+        confirmPassword: String
+    ): Boolean {
+        if (userName.isEmpty()) {
+            binding.editTextUsername.error = "this field cannot be empty"
+            return true
+        }
+
+        if (email.isEmpty()) {
+            binding.editTextEmail.error = "this field cannot be empty"
+            return true
+        }
+
+        if (password.isEmpty()) {
+            binding.editTextPassword.error = "this field cannot be empty"
+            return true
+        }
+
+        if (confirmPassword.isEmpty()) {
+            binding.editTextConfirmPassword.error = "this field cannot be empty"
+            return true
+        }
+
+        if (password != confirmPassword) {
+            binding.editTextConfirmPassword.error = "Password does not march";
+            binding.editTextPassword.error = "Password does not march";
+            return true // finaliza la ejcución hasta donde se llama esta acción, es decir al botón.
+        }
+        return false
     }
 
 }

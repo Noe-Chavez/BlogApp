@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import kotlinx.coroutines.Dispatchers
-import mx.com.disoftware.blogapp.core.Resource
+import mx.com.disoftware.blogapp.core.Result
 import mx.com.disoftware.blogapp.domain.home.HomeScreenRepo
 import java.lang.Exception
 
@@ -13,12 +13,12 @@ class HomeScreenViewModel(private val repo: HomeScreenRepo) : ViewModel() {
      *  Dispatchers.IO se ejecuta en un hilo separado al principal.
      */
     fun fetchLatestPost() = liveData(Dispatchers.IO) {
-        emit(Resource.Loading())
+        emit(Result.Loading())
         try {
             emit(repo.getLatestPosts())
         } catch (e: Exception) {
             // En caso de que falle val querySnapshot en la clase HomeScreenDataSource
-            emit(Resource.Failure(e))
+            emit(Result.Failure(e))
         }
     }
 }

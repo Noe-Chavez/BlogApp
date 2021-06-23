@@ -1,12 +1,12 @@
 package mx.com.disoftware.blogapp.data.remote.home
 
 import com.google.firebase.firestore.FirebaseFirestore
-import mx.com.disoftware.blogapp.core.Resource
+import mx.com.disoftware.blogapp.core.Result
 import mx.com.disoftware.blogapp.data.model.Post
 import kotlinx.coroutines.tasks.await
 
 class HomeScreenDataSource {
-    suspend fun getLatestPosts(): Resource<List<Post>> {
+    suspend fun getLatestPosts(): Result<List<Post>> {
         val postList = mutableListOf<Post>()
         val querySnapshot = FirebaseFirestore.getInstance().collection("posts").get().await()
         for (post in querySnapshot.documents) {
@@ -16,6 +16,6 @@ class HomeScreenDataSource {
             }
 
         }
-        return Resource.Success(postList)
+        return Result.Success(postList)
     }
 }

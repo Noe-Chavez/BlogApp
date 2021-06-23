@@ -6,13 +6,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import mx.com.disoftware.blogapp.R
-import mx.com.disoftware.blogapp.core.Resource
+import mx.com.disoftware.blogapp.core.Result
 import mx.com.disoftware.blogapp.data.remote.home.HomeScreenDataSource
 import mx.com.disoftware.blogapp.databinding.FragmentHomeScreenBinding
 import mx.com.disoftware.blogapp.domain.home.HomeScreenRepoImpl
 import mx.com.disoftware.blogapp.presentation.HomeScreenViewModel
 import mx.com.disoftware.blogapp.presentation.HomeScreenViewModelFactory
 import mx.com.disoftware.blogapp.ui.home.adapter.HomeScreenAdapter
+import kotlin.Result as Result1
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
@@ -28,14 +29,14 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
         viewModel.fetchLatestPost().observe(viewLifecycleOwner, { result ->
             when(result) {
-                is Resource.Loading -> {
+                is Result.Loading -> {
                     binding.progressCircular.visibility = View.VISIBLE
                 }
-                is Resource.Success -> {
+                is Result.Success -> {
                     binding.rvHome.adapter = HomeScreenAdapter(result.data)
                     binding.progressCircular.visibility = View.GONE
                 }
-                is Resource.Failure -> {
+                is Result.Failure -> {
                     Toast.makeText(
                         requireContext(),
                         "Error al cargar los datos del servidor de FireBase",

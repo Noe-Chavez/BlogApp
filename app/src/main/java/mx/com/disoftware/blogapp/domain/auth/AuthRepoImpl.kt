@@ -1,9 +1,9 @@
 package mx.com.disoftware.blogapp.domain.auth
 
 import com.google.firebase.auth.FirebaseUser
-import mx.com.disoftware.blogapp.data.remote.auth.LoginDataSource
+import mx.com.disoftware.blogapp.data.remote.auth.AuthDataSource
 
-class LoginRepoImpl(private val dataSource: LoginDataSource) : LoginRepo {
+class AuthRepoImpl(private val dataSource: AuthDataSource) : AuthRepo {
 
     override suspend fun signIn(email: String, password: String): FirebaseUser? = dataSource.signIn(email, password)
 
