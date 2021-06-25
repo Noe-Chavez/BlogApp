@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,6 +39,18 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
         // Nota se pueden evitar las loienas anteriores cambiando de androidx.fragment.app.FragmentContainerView afragment en el xml
+
+        // Ocultar o mostrar la barra de navegación
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when(destination.id) {
+                // Ocultar el menú ya sea que se esté en el Login o en el registro
+                R.id.loginFragment -> binding.bottomNavigationView.visibility = View.GONE
+                R.id.registerFragment -> binding.bottomNavigationView.visibility = View.GONE
+                // En cualquier otro caso a los anteriores, mostramos el menú de navegación
+                else -> binding.bottomNavigationView.visibility = View.VISIBLE
+            }
+        }
+
     }
 
 }
