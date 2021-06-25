@@ -11,11 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import mx.com.disoftware.blogapp.core.hide
+import mx.com.disoftware.blogapp.core.show
 import mx.com.disoftware.blogapp.databinding.ActivityMainBinding
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -25,6 +28,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +40,18 @@ class MainActivity : AppCompatActivity() {
          */
         // Casteo a NavHostragment.
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
         binding.bottomNavigationView.setupWithNavController(navController)
         // Nota se pueden evitar las loienas anteriores cambiando de androidx.fragment.app.FragmentContainerView afragment en el xml
 
         // Ocultar o mostrar la barra de navegación
+        observeDestinationChange()
+
+    }
+
+    private fun observeDestinationChange() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when(destination.id) {
+            when (destination.id) {
                 // Ocultar el menú ya sea que se esté en el Login o en el registro
                 R.id.loginFragment -> binding.bottomNavigationView.visibility = View.GONE
                 R.id.registerFragment -> binding.bottomNavigationView.visibility = View.GONE
@@ -50,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                 else -> binding.bottomNavigationView.visibility = View.VISIBLE
             }
         }
-
     }
 
 }
