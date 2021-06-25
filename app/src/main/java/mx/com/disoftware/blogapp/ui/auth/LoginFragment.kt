@@ -35,6 +35,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     }
 
+
     private fun isUserLoggedIn() {
         // let se ejecuta en caso de no recibir un nulo
         firebaseAuth.currentUser?.let {
