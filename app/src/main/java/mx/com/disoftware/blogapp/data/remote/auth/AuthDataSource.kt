@@ -36,12 +36,8 @@ class AuthDataSource {
         // Comprimiendo foto.
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        // Cargando foto a FireBase.
+        // Cargando foto a FireBase y obteniendo la ruta de la imagen de FireBase..
         val downloadUrl = imageRef.putBytes(baos.toByteArray()).await().storage.downloadUrl.await().toString()
-        // Obteniendo la ruta de la imagen de FireBase.
-        //downloadUrl.storage.downloadUrl.await().toString()
-        // Nota: puede ir en una sola linea ->  val downloadUrl = imageRef.putBytes(baos.toByteArray()).await().storage.downloadUrl.await().toString()
-
 
         // Actualizar perfil
         val profileUpdates = UserProfileChangeRequest.Builder()
