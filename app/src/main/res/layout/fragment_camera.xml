@@ -7,6 +7,7 @@
     tools:context=".ui.camera.CameraFragment">
     <ImageView
         android:id="@+id/img_add_photo"
+        android:src="@drawable/ic_baseline_add_a_photo_24"
         android:layout_width="match_parent"
         android:layout_height="250dp"/>
     <EditText
