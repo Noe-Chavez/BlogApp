@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 // Ocultar el menú ya sea que se esté en el Login o en el registro
                 R.id.loginFragment -> binding.bottomNavigationView.visibility = View.GONE
                 R.id.registerFragment -> binding.bottomNavigationView.visibility = View.GONE
+                R.id.setupProfileFragment -> binding.bottomNavigationView.visibility = View.GONE
                 // En cualquier otro caso a los anteriores, mostramos el menú de navegación
                 else -> binding.bottomNavigationView.visibility = View.VISIBLE
             }

@@ -1,11 +1,15 @@
 package mx.com.disoftware.blogapp.data.remote.auth
 
 import android.graphics.Bitmap
+import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import mx.com.disoftware.blogapp.data.model.User
+import java.io.ByteArrayOutputStream
 
 class AuthDataSource {
 
@@ -25,7 +29,26 @@ class AuthDataSource {
     }
 
     suspend fun updateUserProfile(imageBitmap: Bitmap, username: String) {
+        // obtener uid de usuario logeado.
+        val user = FirebaseAuth.getInstance().currentUser
+        // Creando una carpeta con la foto del usuario usando su uid.
+        val imageRef = FirebaseStorage.getInstance().reference.child("${user?.uid}/profile_picture")
+        // Comprimiendo foto.
+        val baos = ByteArrayOutputStream()
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        // Cargando foto a FireBase.
+        val downloadUrl = imageRef.putBytes(baos.toByteArray()).await().storage.downloadUrl.await().toString()
+        // Obteniendo la ruta de la imagen de FireBase.
+        //downloadUrl.storage.downloadUrl.await().toString()
+        // Nota: puede ir en una sola linea ->  val downloadUrl = imageRef.putBytes(baos.toByteArray()).await().storage.downloadUrl.await().toString()
 
+
+        // Actualizar perfil
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(username)
+            .setPhotoUri(Uri.parse(downloadUrl))
+            .build()
+        user?.updateProfile(profileUpdates)?.await()
     }
 
 }
