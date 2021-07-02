@@ -1,5 +1,6 @@
 package mx.com.disoftware.blogapp.data.remote.home
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import mx.com.disoftware.blogapp.core.Result
 import mx.com.disoftware.blogapp.data.model.Post
@@ -12,6 +13,10 @@ class HomeScreenDataSource {
         for (post in querySnapshot.documents) {
             // Tranformar de JSON (proveniente de FireBase) a objeto Post y lo agrega a la lista de post
             post.toObject(Post::class.java)?.let {
+                it.apply {
+                    // Estimar cuánto tarda el servidor en recuperar la fecha y hora de éste.
+                    created_at = post.getTimestamp("created_at", DocumentSnapshot.ServerTimestampBehavior.ESTIMATE)?.toDate()
+                }
                 postList.add(it)
             }
 
