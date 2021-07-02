@@ -2,6 +2,7 @@ package mx.com.disoftware.blogapp.data.remote.home
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import mx.com.disoftware.blogapp.core.Result
 import mx.com.disoftware.blogapp.data.model.Post
 import kotlinx.coroutines.tasks.await
@@ -9,7 +10,10 @@ import kotlinx.coroutines.tasks.await
 class HomeScreenDataSource {
     suspend fun getLatestPosts(): Result<List<Post>> {
         val postList = mutableListOf<Post>()
-        val querySnapshot = FirebaseFirestore.getInstance().collection("posts").get().await()
+        val querySnapshot = FirebaseFirestore.getInstance()
+            .collection("posts")
+            .orderBy("created_at", Query.Direction.DESCENDING)
+            .get().await()
         for (post in querySnapshot.documents) {
             // Tranformar de JSON (proveniente de FireBase) a objeto Post y lo agrega a la lista de post
             post.toObject(Post::class.java)?.let {
