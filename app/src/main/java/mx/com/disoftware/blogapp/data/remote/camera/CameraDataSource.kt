@@ -30,7 +30,8 @@ class CameraDataSource {
                     profile_name = displayName,
                     profile_picture = firebaseUser.photoUrl.toString(), // al hacer la conversión a String se verifica la nulabilidad.
                     post_image = downloadUrl,
-                    post_description = description
+                    post_description = description,
+                    uid = user.uid
                 ))
             }
         }

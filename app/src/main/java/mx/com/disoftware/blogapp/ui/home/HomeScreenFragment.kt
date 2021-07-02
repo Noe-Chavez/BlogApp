@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import mx.com.disoftware.blogapp.R
 import mx.com.disoftware.blogapp.core.Result
+import mx.com.disoftware.blogapp.core.hide
+import mx.com.disoftware.blogapp.core.show
 import mx.com.disoftware.blogapp.data.remote.home.HomeScreenDataSource
 import mx.com.disoftware.blogapp.databinding.FragmentHomeScreenBinding
 import mx.com.disoftware.blogapp.domain.home.HomeScreenRepoImpl
@@ -30,11 +32,17 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
         viewModel.fetchLatestPost().observe(viewLifecycleOwner, { result ->
             when(result) {
                 is Result.Loading -> {
-                    binding.progressCircular.visibility = View.VISIBLE
+                    binding.progressCircular.show()
                 }
                 is Result.Success -> {
+                    binding.progressCircular.hide()
+                    if (result.data.isEmpty()){
+                        binding.emptyContainer.show()
+                        return@observe // rompe la ejecución, no sigue con lo de abajo, y se regresa al observador.
+                    } else {
+                        binding.emptyContainer.hide()
+                    }
                     binding.rvHome.adapter = HomeScreenAdapter(result.data)
-                    binding.progressCircular.visibility = View.GONE
                 }
                 is Result.Failure -> {
                     Toast.makeText(
