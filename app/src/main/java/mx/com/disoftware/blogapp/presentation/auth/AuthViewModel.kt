@@ -4,13 +4,14 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import mx.com.disoftware.blogapp.core.Result
 import mx.com.disoftware.blogapp.domain.auth.AuthRepo
 
 class AuthViewModel(private val repo: AuthRepo) : ViewModel() {
 
-    fun signIn(email: String, password: String) = liveData(Dispatchers.IO) {
+    fun signIn(email: String, password: String) = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
         emit(Result.Loading())
         try {
             emit(Result.Success(repo.signIn(email, password)))

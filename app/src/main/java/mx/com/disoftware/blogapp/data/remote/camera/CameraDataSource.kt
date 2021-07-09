@@ -5,13 +5,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import mx.com.disoftware.blogapp.data.model.Post
 import java.io.ByteArrayOutputStream
 import java.util.*
 
 class CameraDataSource {
+
     suspend fun uploadPhoto(imageBitmap: Bitmap, description: String) {
+
         // obtener uid de usuario logeado.
         val user = FirebaseAuth.getInstance().currentUser
         // Generar un número único.
@@ -22,7 +26,10 @@ class CameraDataSource {
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         // Cargando foto a FireBase y obteniendo la ruta de la imagen de FireBase..
-        val downloadUrl = imageRef.putBytes(baos.toByteArray()).await().storage.downloadUrl.await().toString()
+        var downloadUrl: String = ""
+        withContext(Dispatchers.IO) { // se ejecuta en segundo plano.
+            downloadUrl = imageRef.putBytes(baos.toByteArray()).await().storage.downloadUrl.await().toString()
+        }
         // Obteneiendo los posts
         user?.let { firebaseUser ->
             firebaseUser.displayName?.let { displayName ->
